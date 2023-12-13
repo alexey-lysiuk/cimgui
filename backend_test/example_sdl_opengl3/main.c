@@ -7,6 +7,7 @@
 #ifdef _MSC_VER
 #include <windows.h>
 #endif
+#define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 
@@ -29,21 +30,21 @@ int main(int argc, char* argv[])
   }
  
   // Decide GL+GLSL versions
-#if __APPLE__
-    // GL 3.2 Core + GLSL 150
-    const char* glsl_version = "#version 150";
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-#else
-    // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 130";
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-#endif
+//#if __APPLE__
+//    // GL 3.2 Core + GLSL 150
+//    const char* glsl_version = "#version 150";
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+//#else
+//    // GL 3.0 + GLSL 130
+//    const char* glsl_version = "#version 130";
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+//    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+//#endif
 
   // and prepare OpenGL stuff
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
@@ -82,7 +83,8 @@ int main(int argc, char* argv[])
 #endif
   
   ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
-  ImGui_ImplOpenGL3_Init(glsl_version);
+	ImGui_ImplOpenGL2_Init();
+  //ImGui_ImplOpenGL3_Init(glsl_version);
 
   igStyleColorsDark(NULL);
   //ImFontAtlas_AddFontDefault(io.Fonts, NULL);
@@ -113,7 +115,8 @@ int main(int argc, char* argv[])
     }
     
     // start imgui frame
-    ImGui_ImplOpenGL3_NewFrame();
+    //ImGui_ImplOpenGL3_NewFrame();
+	  ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     igNewFrame();
 
@@ -164,7 +167,8 @@ int main(int argc, char* argv[])
     glViewport(0, 0, (int)ioptr->DisplaySize.x, (int)ioptr->DisplaySize.y);
     glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
-    ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
+    //ImGui_ImplOpenGL3_RenderDrawData(igGetDrawData());
+	ImGui_ImplOpenGL2_RenderDrawData(igGetDrawData());
 #ifdef IMGUI_HAS_DOCK
 	if (ioptr->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
@@ -179,7 +183,8 @@ int main(int argc, char* argv[])
   }
 
   // clean up
-  ImGui_ImplOpenGL3_Shutdown();
+  //ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplOpenGL2_Shutdown();
   ImGui_ImplSDL2_Shutdown();
   igDestroyContext(NULL);
 

@@ -56,8 +56,9 @@ if(IMGUI_FREETYPE)
 endif(IMGUI_FREETYPE)
 
 #opengl3
-list(APPEND IMGUI_SOURCES ${BAKENDS_FOLDER}imgui_impl_opengl3.cpp)
-include_directories(../../imgui/examples/libs/gl3w)
+#list(APPEND IMGUI_SOURCES ${BAKENDS_FOLDER}imgui_impl_opengl3.cpp)
+list(APPEND IMGUI_SOURCES ${BAKENDS_FOLDER}imgui_impl_opengl2.cpp)
+#include_directories(../../imgui/examples/libs/gl3w)
 if(WIN32)
        list(APPEND IMGUI_LIBRARIES opengl32)
 else(WIN32)#Unix
@@ -103,7 +104,7 @@ target_link_libraries(cimgui_sdl ${IMGUI_LIBRARIES} ${IMGUI_SDL_LIBRARY})
 #using library
 include_directories(../../generator/output/)
 add_executable(test_sdl main.c)
-target_compile_definitions(test_sdl PUBLIC -DCIMGUI_USE_OPENGL3 -DCIMGUI_USE_SDL2)
+target_compile_definitions(test_sdl PUBLIC -DCIMGUI_USE_OPENGL2 -DCIMGUI_USE_SDL2)
 if (MINGW)
 target_link_options(test_sdl PRIVATE "-mconsole")
 endif()
