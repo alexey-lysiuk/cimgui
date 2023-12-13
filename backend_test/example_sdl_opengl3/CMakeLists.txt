@@ -61,7 +61,7 @@ include_directories(../../imgui/examples/libs/gl3w)
 if(WIN32)
        list(APPEND IMGUI_LIBRARIES opengl32)
 else(WIN32)#Unix
-       list(APPEND IMGUI_LIBRARIES GL)
+#       list(APPEND IMGUI_LIBRARIES GL)
 endif(WIN32)
 
 
@@ -97,7 +97,7 @@ else(SDL2_FOUND)
 	endif(DEFINED SDL_PATH)
 endif(SDL2_FOUND)
 
-add_library(cimgui_sdl SHARED ${IMGUI_SOURCES})
+add_library(cimgui_sdl STATIC ${IMGUI_SOURCES})
 target_link_libraries(cimgui_sdl ${IMGUI_LIBRARIES} ${IMGUI_SDL_LIBRARY})
 
 #using library
@@ -108,4 +108,4 @@ if (MINGW)
 target_link_options(test_sdl PRIVATE "-mconsole")
 endif()
 target_link_libraries(test_sdl ${IMGUI_SDL_LIBRARY} cimgui_sdl)
-
+target_link_options(test_sdl PRIVATE -framework OpenGL)
